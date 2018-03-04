@@ -36,7 +36,23 @@
     <div
       style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-      <h1>About the CodeU Chat App</h1>
+      <h1>About Team 4</h1>
+      <p>
+           <strong>Mentor: </strong> Dave Anderson
+      </p>
+      <p>     
+           <strong>Team members: </strong>
+      </p>
+
+      <ul>
+           <li><strong>Andy Gutierrez - </strong>Sophomore Computer Science major at the University of Texas Rio Grande Valley</li>
+           <li><strong>Grace Fan - </strong>Sophomore Computer Science major at Texas A&amp;M University</li>
+           <li><strong>Heather Bolze - </strong>Sophomore Industrial Engineering major at Northwestern Univeristy</li>
+           <li><strong>Naijing Zhang - </strong>Junior Computer Science major at UIUC</li>
+
+      </ul>
+
+<!--       <h1>About the CodeU Chat App</h1>
       <p>
         This is an example chat application designed to be a starting point
         for your CodeU project team work. Here's some stuff to think about:
@@ -63,7 +79,7 @@
         homepage and this about page to tell your users more about your team.
         This page should also be used to describe the features and improvements
         you've added.
-      </p>
+      </p> -->
     </div>
   </div>
 </body>
