@@ -48,7 +48,7 @@
            <li><strong>Andy Gutierrez - </strong>Sophomore Computer Science major at the University of Texas Rio Grande Valley</li>
            <li><strong>Grace Fan - </strong>Sophomore Computer Science major at Texas A&amp;M University</li>
            <li><strong>Heather Bolze - </strong>Sophomore Industrial Engineering major at Northwestern Univeristy</li>
-           <li><strong>Naijing Zhang - </strong>Junior Computer Science major at UIUC</li>
+           <li><strong>Naijing Zhang - </strong>Junior Computer Science major at University of Illinois Urbana-Champaign</li>
 
       </ul>
 
