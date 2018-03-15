@@ -1,5 +1,7 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
