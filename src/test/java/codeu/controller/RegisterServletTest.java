@@ -43,6 +43,41 @@ public class RegisterServletTest {
    Mockito.when(mockResponse.getWriter()).thenReturn(mockPrintWriter);
  }
 
+ // @Test
+ // public void testDoGet() throws IOException, ServletException {
+ //   registerServlet.doGet(mockRequest, mockResponse);
 
+ //   Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+ // }
+
+ // @Test
+ //  public void testDoPost_BadUsername() throws IOException, ServletException {
+ //    Mockito.when(mockRequest.getParameter("username")).thenReturn("bad !@#$% username");
+
+ //    registerServlet.doPost(mockRequest, mockResponse);
+
+ //    Mockito.verify(mockRequest)
+ //        .setAttribute("error", "Please enter only letters, numbers, and spaces.");
+ //    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+ //  }
+
+ //  @Test
+ //  public void testDoPost_ExistingUser() throws IOException, ServletException {
+ //    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+
+ //    UserStore mockUserStore = Mockito.mock(UserStore.class);
+ //    Mockito.when(mockUserStore.isUserRegistered("test username")).thenReturn(true);
+ //    registerServlet.setUserStore(mockUserStore);
+
+ //    HttpSession mockSession = Mockito.mock(HttpSession.class);
+ //    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+
+ //    registerServlet.doPost(mockRequest, mockResponse);
+
+ //    Mockito.verify(mockUserStore, Mockito.never()).addUser(Mockito.any(User.class));
+
+ //    Mockito.verify(mockSession).setAttribute("user", "test username");
+ //    Mockito.verify(mockResponse).sendRedirect("/conversations");
+ //  }
 
 }
