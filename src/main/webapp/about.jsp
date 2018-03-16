@@ -13,44 +13,40 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 --%>
+
+<%@ include file="nav-bar.html" %>
+
 <!DOCTYPE html>
 <html>
-<head>
-  <title>CodeU Chat App</title>
-  <link rel="stylesheet" href="/css/main.css">
-</head>
-<body>
+  <head>
+    <title>CodeU Chat App</title>
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
 
-  <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
-    <a href="/conversations">Conversations</a>
-    <% if(request.getSession().getAttribute("user") != null){ %>
-      <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else{ %>
-      <a href="/login">Login</a>
-    <% } %>
-    <a href="/about.jsp">About</a>
-  </nav>
+  <body>
+    <div id="container">
+      <div
+        style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
 
-  <div id="container">
-    <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
-
-      <h1>About Team 4</h1>
-      <p>
+        <h1>About Team 4</h1>
+        <p>
            <strong>Mentor: </strong> Dave Anderson
-      </p>
-      <p>     
+        </p>
+        <p>     
            <strong>Team members: </strong>
-      </p>
+        </p>
 
-      <ul>
+        <ul>
            <li><strong>Andy Gutierrez - </strong>Sophomore Computer Science major at the University of Texas Rio Grande Valley</li>
            <li><strong>Grace Fan - </strong>Sophomore Computer Science major at Texas A&amp;M University</li>
            <li><strong>Heather Bolze - </strong>Sophomore Industrial Engineering major at Northwestern Univeristy</li>
            <li><strong>Naijing Zhang - </strong>Junior Computer Science major at University of Illinois Urbana-Champaign</li>
+        </ul>
 
-      </ul>
+      </div>
+    </div>
+  </body>
+</html>
 
 <!--       <h1>About the CodeU Chat App</h1>
       <p>
@@ -80,7 +76,4 @@
         This page should also be used to describe the features and improvements
         you've added.
       </p> -->
-    </div>
-  </div>
-</body>
-</html>
+
