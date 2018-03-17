@@ -16,8 +16,9 @@ public class RegisterServletTest {
     
     private RegisterServlet registerServlet;
     private HttpServletRequest mockRequest;
-    private HttpServletResponse mockResponse;
     private RequestDispatcher mockRequestDispatcher;
+    private PrintWriter mockPrintWriter;
+    private HttpServletResponse mockResponse;
     
     @Before
     public void setup() {
@@ -28,7 +29,13 @@ public class RegisterServletTest {
         Mockito.when(mockRequest.getRequestDispatcher("/WEB-INF/view/register.jsp"))
         .thenReturn(mockRequestDispatcher);
     }
-
+    
+    @Test
+    public void testDoGet() throws IOException, ServletException {
+        registerServlet.doGet(mockRequest, mockResponse);
+        
+        Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+    }
 
  // @Test
  //  public void testDoPost_BadUsername() throws IOException, ServletException {
