@@ -26,13 +26,14 @@ public class UserTest {
     UUID id = UUID.randomUUID();
     String name = "test_username";
     String password = "password";
+    String hashedPassword = BCrypt.hashpw(password,BCrypt.gensalt());
     Instant creation = Instant.now();
 
-    User user = new User(id, name, password, creation);
+    User user = new User(id, name, hashedPassword, creation);
 
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());
-    Assert.assertEquals(password, user.getPassword());
+    Assert.assertEquals(hashedPassword, user.getPassword());
     Assert.assertEquals(creation, user.getCreationTime());
   }
 }
