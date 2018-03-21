@@ -17,6 +17,7 @@ package codeu.model.data;
 import java.time.Instant;
 import java.util.UUID;
 
+
 /** Class representing a registered user. */
 public class User {
   private final UUID id;
@@ -32,7 +33,7 @@ public class User {
    * @param password the password of this User
    * @param creation the creation time of this User
    */
-  public User(UUID id, String name, String password, Instant creation) {
+  public User(UUID id, String name, String hashedPassword, Instant creation) {
     this.id = id;
     this.name = name;
     this.hashedPassword = hashedPassword;

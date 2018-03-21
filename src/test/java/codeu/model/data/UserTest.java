@@ -18,6 +18,8 @@ import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mindrot.jbcrypt.BCrypt;
+
 
 public class UserTest {
 
