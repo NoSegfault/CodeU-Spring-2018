@@ -19,6 +19,7 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.time.Instant;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -120,5 +121,21 @@ public class UserStore {
    */
   public void setUsers(List<User> users) {
     this.users = users;
+  }
+
+  public User getNewest(){
+
+      User newestUser = users.get(0);
+
+      for(User user : users){
+        if(user.getCreationTime().isAfter(newestUser.getCreationTime())){
+          newestUser = user;
+        }
+      }
+      return newestUser;
+  }
+
+  public int getTotal(){
+    return users.size();
   }
 }

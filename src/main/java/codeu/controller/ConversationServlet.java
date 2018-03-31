@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.AdminStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
@@ -36,6 +37,8 @@ public class ConversationServlet extends HttpServlet {
   /** Store class that gives access to Conversations. */
   private ConversationStore conversationStore;
 
+  private AdminStore adminStore;
+
   /**
    * Set up state for handling conversation-related requests. This method is only called when
    * running in a server, not when running in a test.
@@ -45,6 +48,7 @@ public class ConversationServlet extends HttpServlet {
     super.init();
     setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
+    setAdminStore(AdminStore.getInstance());
   }
 
   /**
@@ -61,6 +65,10 @@ public class ConversationServlet extends HttpServlet {
    */
   void setConversationStore(ConversationStore conversationStore) {
     this.conversationStore = conversationStore;
+  }
+
+  void setAdminStore(AdminStore adminStore){
+    this.adminStore = adminStore;
   }
 
   /**
@@ -117,6 +125,8 @@ public class ConversationServlet extends HttpServlet {
         new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
 
     conversationStore.addConversation(conversation);
+    adminStore.addConversation(conversation);
+
     response.sendRedirect("/chat/" + conversationTitle);
   }
 }

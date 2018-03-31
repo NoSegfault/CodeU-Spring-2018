@@ -16,6 +16,8 @@ package codeu.model.store.basic;
 
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import codeu.model.store.basic.ConversationStore;
+import codeu.model.data.Conversation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -26,6 +28,17 @@ import java.util.UUID;
  * instance.
  */
 public class MessageStore {
+
+
+
+
+    private ConversationStore conversationStore;
+
+    
+    void setConversationStore(ConversationStore conversationStore) {
+      this.conversationStore = conversationStore;
+    }
+    
 
   /** Singleton instance of MessageStore. */
   private static MessageStore instance;
@@ -63,6 +76,7 @@ public class MessageStore {
   private MessageStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
     messages = new ArrayList<>();
+    setConversationStore(ConversationStore.getInstance());
   }
 
   /**
@@ -106,4 +120,20 @@ public class MessageStore {
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
+
+  public int getTotal(){
+    List<Conversation> conversations = conversationStore.getAllConversations();
+
+    MessageStore messageStore = MessageStore.getInstance();
+
+    int count = 0;
+      for(Conversation conversation : conversations){
+        List<Message> messagesInConversation = messageStore.getMessagesInConversation(conversation.getId());
+        count += messagesInConversation.size();
+      }
+    return count;
+
+  }
+
+
 }
