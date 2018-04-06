@@ -116,24 +116,52 @@ public class MessageStore {
     return messagesInConversation;
   }
 
+  public List<Message> getUserMessagesInConversation(UUID conversationId, UUID userId) {
+
+    List<Message> userMessagesInConversation = new ArrayList<>();
+
+    for (Message message : messages) {
+      if (message.getConversationId().equals(conversationId) && message.getAuthorId().equals(userId)) {
+        userMessagesInConversation.add(message);
+      }
+    }
+
+    return userMessagesInConversation;
+  }
+
   /** Sets the List of Messages stored by this MessageStore. */
   public void setMessages(List<Message> messages) {
     this.messages = messages;
   }
 
   public int getTotal(){
-    List<Conversation> conversations = conversationStore.getAllConversations();
+    // List<Conversation> conversations = conversationStore.getAllConversations();
 
-    MessageStore messageStore = MessageStore.getInstance();
+    // MessageStore messageStore = MessageStore.getInstance();
 
-    int count = 0;
-      for(Conversation conversation : conversations){
-        List<Message> messagesInConversation = messageStore.getMessagesInConversation(conversation.getId());
-        count += messagesInConversation.size();
-      }
-    return count;
-
+    // int count = 0;
+    //   for(Conversation conversation : conversations){
+    //     List<Message> messagesInConversation = messageStore.getMessagesInConversation(conversation.getId());
+    //     count += messagesInConversation.size();
+    //   }
+    // return count;
+    return messages.size();
   }
+
+  public List<Message> getUserMessages(UUID userId) {
+
+    List<Message> userMessages = new ArrayList<>();
+
+    for (Message message : messages) {
+      if (message.getAuthorId().equals(userId)) {
+        userMessages.add(message);
+      }
+    }
+    return userMessages;
+  }
+
+
+  
 
 
 }

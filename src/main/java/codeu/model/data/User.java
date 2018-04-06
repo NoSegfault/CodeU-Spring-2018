@@ -24,6 +24,7 @@ public class User {
   private final String name;
   private final String hashedPassword;
   private final Instant creation;
+  private boolean admin;
 
   /**
    * Constructs a new User.
@@ -38,6 +39,7 @@ public class User {
     this.name = name;
     this.hashedPassword = hashedPassword;
     this.creation = creation;
+    this.admin = false;
   }
 
   /** Returns the ID of this User. */
@@ -59,4 +61,13 @@ public class User {
   public Instant getCreationTime() {
     return creation;
   }
+
+  public boolean isAdmin(){
+    return admin;
+  }
+
+  public void setAdmin(){
+    admin = true;
+  }
+
 }

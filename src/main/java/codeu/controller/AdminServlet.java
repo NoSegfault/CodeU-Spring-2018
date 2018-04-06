@@ -23,6 +23,8 @@ import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.AdminStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Map; 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.ServletException;
@@ -94,10 +96,10 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("admin",adminStore);
           }
           else {
-            List<Conversation> userConversations = adminStore.getUserConversations(username);
-
-            request.setAttribute("userConversations", userConversations);
+            Map<Conversation,List<Message>> userConversationsMap = adminStore.getUserConversations(username);
+            request.setAttribute("userConversationsMap", userConversationsMap);
             request.setAttribute("userInfo",user);
+            request.setAttribute("admin",adminStore);
           }
 
           request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);

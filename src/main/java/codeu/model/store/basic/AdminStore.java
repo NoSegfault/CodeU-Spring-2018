@@ -11,7 +11,12 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Map; 
+import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,7 +35,7 @@ public class AdminStore {
     private int totalMessages;
     private int totalConversations;
     private User newestUser;
-    //private User mostActiveUser;
+    private User mostActiveUser;
 
 
 
@@ -75,6 +80,7 @@ public class AdminStore {
       this.totalMessages = messageStore.getTotal();
       this.totalConversations = conversationStore.getTotal();
       this.newestUser = userStore.getNewest();
+      this.mostActiveUser = userStore.getMostActiveUser();
 
     }
 
@@ -84,6 +90,7 @@ public class AdminStore {
       this.totalMessages = messageStore.getTotal();
       this.totalConversations = conversationStore.getTotal();
       this.newestUser = userStore.getNewest();
+      this.mostActiveUser = userStore.getMostActiveUser();
     }
 
 
@@ -104,11 +111,56 @@ public class AdminStore {
       return newestUser.getName();
     }
 
-    public List<Conversation> getUserConversations(String username){
+    public String getMostActiveUser(){
+      return mostActiveUser.getName();
+    }
+
+
+
+
+
+
+    public Map<Conversation, List<Message>> getUserConversations(String username){
 
       UUID userId = userStore.getUser(username).getId();
-      return conversationStore.getUserConversations(userId);
+      List<Message> userMessages = messageStore.getUserMessages(userId);
+
+      Map<Conversation, List<Message>> userConversationsMap = new HashMap<Conversation, List<Message>>();
+
+      for(Message message : userMessages){
+          UUID conversationId = message.getConversationId();
+          Conversation conversation = conversationStore.getConversationWithId(conversationId);
+          List<Message> messagesInConversation = messageStore.getUserMessagesInConversation(conversationId, userId);
+
+          userConversationsMap.put(conversation, messagesInConversation);
+
+      }
+
+      return userConversationsMap;
     }
+
+
+
+    public List<Conversation> getUserOwnedConversations(String username){
+        UUID userId = userStore.getUser(username).getId();
+        return conversationStore.getUserOwnedConversations(userId);
+    }
+
+    public List<Message> getMessagesInConversation(UUID conversationId) {
+
+      List<Message> userMessages = new ArrayList<>();
+
+      return userMessages;
+    }
+
+    public int getUserTotalMessages(String username){
+
+      UUID userId = userStore.getUser(username).getId();
+      return messageStore.getUserMessages(userId).size();
+    }
+
+
+
 
     //These methods constantly keep track of the admin info
     public void addMessage(Message message){
@@ -123,5 +175,13 @@ public class AdminStore {
     public void addConversation(Conversation conversation){
       totalConversations += 1;
     }
+
+    public void setAdmin(String username){
+
+      User user = userStore.getUser(username);
+      user.setAdmin();
+    }
+
+
 
 }

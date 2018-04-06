@@ -15,7 +15,9 @@
 package codeu.model.store.basic;
 
 import codeu.model.data.User;
+import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import codeu.model.store.basic.MessageStore;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +29,12 @@ import java.time.Instant;
  * instance.
  */
 public class UserStore {
+
+    private MessageStore messageStore;
+
+    void setMessageStore(MessageStore messageStore) {
+      this.messageStore = messageStore;
+    }
 
   /** Singleton instance of UserStore. */
   private static UserStore instance;
@@ -63,6 +71,7 @@ public class UserStore {
   private UserStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
     users = new ArrayList<>();
+    setMessageStore(MessageStore.getInstance());
   }
 
   /** Load a set of randomly-generated Message objects. */
@@ -138,4 +147,24 @@ public class UserStore {
   public int getTotal(){
     return users.size();
   }
+
+  public User getMostActiveUser(){
+
+    int max = 0;
+    User maxUser = users.get(0);
+    
+    for(User user : users){
+      List<Message> userMessages = messageStore.getUserMessages(user.getId());
+      if(userMessages.size() > max){
+        max = userMessages.size();
+        maxUser = user;
+      }
+
+    }
+
+    return maxUser;
+
+  }
+
+
 }

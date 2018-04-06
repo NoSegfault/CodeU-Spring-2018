@@ -118,8 +118,18 @@ public class ConversationStore {
     return null;
   }
 
+  /** Find and return the Conversation with the given Id. */
+  public Conversation getConversationWithId(UUID conversationId) {
+    for (Conversation conversation : conversations) {
+      if (conversation.getId().equals(conversationId)) {
+        return conversation;
+      }
+    }
+    return null;
+  }
+
   /** Find and return the Conversation with the given user. */
-  public List<Conversation> getUserConversations(UUID userId) {
+  public List<Conversation> getUserOwnedConversations(UUID userId) {
 
     List<Conversation> userConversations = new ArrayList<>();
 
