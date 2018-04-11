@@ -140,17 +140,9 @@ public class AdminStore {
     }
 
 
-
     public List<Conversation> getUserOwnedConversations(String username){
         UUID userId = userStore.getUser(username).getId();
         return conversationStore.getUserOwnedConversations(userId);
-    }
-
-    public List<Message> getMessagesInConversation(UUID conversationId) {
-
-      List<Message> userMessages = new ArrayList<>();
-
-      return userMessages;
     }
 
     public int getUserTotalMessages(String username){
@@ -158,8 +150,6 @@ public class AdminStore {
       UUID userId = userStore.getUser(username).getId();
       return messageStore.getUserMessages(userId).size();
     }
-
-
 
 
     //These methods constantly keep track of the admin info
