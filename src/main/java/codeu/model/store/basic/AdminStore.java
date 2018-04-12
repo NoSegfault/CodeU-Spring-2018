@@ -166,11 +166,6 @@ public class AdminStore {
       totalConversations += 1;
     }
 
-    public void setAdmin(String username){
-
-      User user = userStore.getUser(username);
-      user.setAdmin();
-    }
 
 
 
