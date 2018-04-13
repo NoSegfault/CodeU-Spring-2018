@@ -64,6 +64,7 @@ public class PersistentDataStore {
       try {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String userName = (String) entity.getProperty("username");
+        boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         User user = new User(uuid, userName, password, creationTime);
@@ -151,6 +152,7 @@ public class PersistentDataStore {
     Entity userEntity = new Entity("chat-users");
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
+    userEntity.setProperty("admin",user.isAdmin());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     datastore.put(userEntity);
