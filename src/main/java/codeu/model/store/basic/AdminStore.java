@@ -108,10 +108,16 @@ public class AdminStore {
     }
 
     public String getNewestUser(){
+      if(newestUser == null){
+        return "";
+      }
       return newestUser.getName();
     }
 
     public String getMostActiveUser(){
+      if(mostActiveUser == null){
+        return "";
+      }
       return mostActiveUser.getName();
     }
 

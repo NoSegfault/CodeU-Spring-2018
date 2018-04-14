@@ -134,6 +134,10 @@ public class UserStore {
 
   public User getNewest(){
 
+      if(users.size() == 0){
+        return null;
+      }
+
       User newestUser = users.get(0);
 
       for(User user : users){
@@ -149,6 +153,11 @@ public class UserStore {
   }
 
   public User getMostActiveUser(){
+
+
+    if(users.size() == 0){
+        return null;
+    }
 
     int max = 0;
     User maxUser = users.get(0);

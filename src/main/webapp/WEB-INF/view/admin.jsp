@@ -55,6 +55,7 @@
 			
 		</ul>	
 
+
 	<%	} else{  %>
 
 		<% User user = (User) request.getAttribute("userInfo"); %> 
@@ -119,6 +120,7 @@
 
 
 		}
+
 
 	</script>
 </body>
