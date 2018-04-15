@@ -22,7 +22,7 @@ import java.util.UUID;
 public class User {
   private final UUID id;
   private final String name;
-  private final boolean admin;
+  private boolean admin;
   private final String hashedPassword;
   private final Instant creation;
 
