@@ -64,7 +64,7 @@ public class PersistentDataStore {
       try {
         UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
         String userName = (String) entity.getProperty("username");
-        boolean admin = Boolean.parseBoolean((String) entity.getProperty("admin"));
+        boolean admin = (boolean) entity.getProperty("admin");
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         User user = new User(uuid, userName, password, creationTime);
