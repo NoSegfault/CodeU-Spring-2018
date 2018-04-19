@@ -82,7 +82,7 @@ public class RegisterServlet extends HttpServlet {
    		userStore.addUser(user);
    		adminStore.addUser(user);
 
-   		if(adminStore.getTotalUsers() == 0){
+   		if(adminStore.getTotalUsers() == 1){
    			user.setAdmin(true);
    		}
 

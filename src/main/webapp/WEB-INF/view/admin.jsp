@@ -22,14 +22,18 @@
 </head>
 <body>
 
-	<% if(  !(  request.getSession().getAttribute("admin")  )   )  { %>
-
-
-	<h2 style="color:red">You do not hvae access to this site</h2>
-
-	<% } else { %>
 
 	<div id="container">
+
+		<% if(request.getSession().getAttribute("admin") == null){ %>
+			<h2 style="color:red">You do not have access to this site </h2>
+
+     	<% } else if((boolean) request.getSession().getAttribute("admin") == false) { %>
+
+     		<h2 style="color:red">You do not have access to this site </h2>
+
+     	<% } else { %>
+
 		<h1>Admin Page</h1>
 
 		<form method="POST" action="/admin">
@@ -118,8 +122,8 @@
 			<input type="submit" name="Make Admin">
 		</form>
 
-	<% } } %>
-
+	<% } %>
+	<% } %>
 	
 
 

@@ -9,9 +9,10 @@
         <a href="/register">Register</a>
       <% } %>
       <a href="about.jsp">About</a>
-      <% if(request.getSession().getAttribute("admin") == true){ %>
+      <% if(request.getSession().getAttribute("admin") != null){ %>
+      <% if((boolean) request.getSession().getAttribute("admin") == true) {%>
             <a href="/testdata">Admin Page</a>
-      <% }
+      <% } } %>
 
 
     </nav>
