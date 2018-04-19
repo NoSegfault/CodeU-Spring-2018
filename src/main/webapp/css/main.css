@@ -56,3 +56,57 @@ input {
 button {
   font-size: 18px;
 }
+
+.click_box{
+  width: 95%;
+  height: auto;
+  padding: 20px;
+  border: 1px solid;
+  cursor: pointer;
+  margin: auto;
+  margin-right: 10px;
+  margin-bottom: 0px;
+  margin-left: -30px;
+}
+
+.click_box h5{
+  display: inline;
+}
+
+.dropdown_box{
+  transition: 1s ease;
+  width: 92%;
+  height: 0px;
+  overflow: hidden;
+  margin-left: -30px;
+}
+
+
+.expanded_box{
+  transition: 1s ease;
+  border: 1px solid;
+  height: auto;
+  margin: auto;
+  margin-top: 0px;
+  margin-bottom: 15px;
+  
+  
+}
+
+.convo_link{
+  display: inline;
+  float: right;
+  padding: 3px;
+  text-decoration: none;
+  color: white;
+  border-radius: 4px;
+  background-color: #290E9C;
+}
+
+.convo_link:hover {
+  text-decoration: none;
+  border: 1px solid white;
+  padding: 4px;
+}
+
+
