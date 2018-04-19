@@ -11,7 +11,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ include file="/../../nav-bar.html" %>
 
-<% AdminStore admin = (AdminStore) request.getAttribute("admin"); %>
+<% AdminStore admin = (AdminStore) request.getAttribute("adminInfo"); %>
 
 <!DOCTYPE html>
 <html>
@@ -70,6 +70,7 @@
 			<li>Total Messages: <%= admin.getUserTotalMessages(user.getName()) %></li>
 		</ul>
 
+		<a href="#" onclick="makeAdmin('<%= user.getName()%>')">Make Admin</a>
 
 
 		<div style="display: inline-block; width: 40%; float: left; border: 1px solid; padding: 10px;">
@@ -106,6 +107,11 @@
 
 	<% } %>
 
+	<form action="/admin" method="post" id="makeAdmin_form">		
+		<input type="text" name="makeAdmin" id="makeAdmin">
+		<input type="submit" name="Make Admin">
+	</form>
+
 
 	</div>
 
@@ -118,6 +124,13 @@
 
 			document.getElementsByClassName("dropdown_box")[i].classList.toggle("expanded_box");
 
+
+		}
+
+
+		function makeAdmin(user){
+
+			document.getElementById("makeAdmin").value = user;
 
 		}
 

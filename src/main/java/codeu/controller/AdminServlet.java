@@ -72,7 +72,7 @@ public class AdminServlet extends HttpServlet {
 
 
 
-    request.setAttribute("admin",adminStore);
+    request.setAttribute("adminInfo",adminStore);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
 
 
@@ -88,18 +88,27 @@ public class AdminServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
 
+          String makeAdminUserName = request.getParameter("makeAdmin");
+
+          if(makeAdmin != null){
+
+            User makeAdminUser = userStore.getUser(makeAdminUserName);
+            makeAdminUser.setAdmin(true);
+
+          }
+
           String username = request.getParameter("search");
           User user = userStore.getUser(username);
 
           if(user == null){
             request.setAttribute("error","User could not be found");
-            request.setAttribute("admin",adminStore);
+            request.setAttribute("adminInfo",adminStore);
           }
           else {
             Map<Conversation,List<Message>> userConversationsMap = adminStore.getUserConversations(username);
             request.setAttribute("userConversationsMap", userConversationsMap);
             request.setAttribute("userInfo",user);
-            request.setAttribute("admin",adminStore);
+            request.setAttribute("adminInfo",adminStore);
           }
 
           request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);

@@ -118,7 +118,7 @@ public class AdminStore {
       if(mostActiveUser == null){
         return "";
       }
-      return mostActiveUser.getName();
+      return userStore.getMostActiveUser().getName();
     }
 
 
