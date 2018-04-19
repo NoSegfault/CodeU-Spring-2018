@@ -73,5 +73,4 @@ public class User {
   public void setAdmin(boolean adminValue){
     this.admin = adminValue;
   }
-
 }

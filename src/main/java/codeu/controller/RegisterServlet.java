@@ -2,6 +2,7 @@ package codeu.controller;
 
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.basic.AdminStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.UUID;
@@ -21,6 +22,8 @@ public class RegisterServlet extends HttpServlet {
 	* Store class that gives access to Users.
 	*/
 	private UserStore userStore;
+
+	private AdminStore adminStore;
 		 
 	/**
 	* Set up state for handling registration-related requests. This method is only called when
@@ -30,6 +33,7 @@ public class RegisterServlet extends HttpServlet {
 	public void init() throws ServletException {
 		super.init();
 		setUserStore(UserStore.getInstance());
+		setAdminStore(AdminStore.getInstance());
 	}
 		 
 		 /**
@@ -38,6 +42,10 @@ public class RegisterServlet extends HttpServlet {
 		  */
 	void setUserStore(UserStore userStore) {
 		this.userStore = userStore;
+	}
+
+	void setAdminStore(AdminStore adminStore){
+		this.adminStore = adminStore;
 	}
 
 	@Override
@@ -70,6 +78,7 @@ public class RegisterServlet extends HttpServlet {
     	User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
         user.setAdmin(false);
    		userStore.addUser(user);
+   		adminStore.addUser(user);
 
 
    		response.sendRedirect("/login");
