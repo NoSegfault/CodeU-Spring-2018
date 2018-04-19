@@ -22,6 +22,7 @@ import java.util.UUID;
 public class User {
   private final UUID id;
   private final String name;
+  private boolean admin;
   private final String hashedPassword;
   private final Instant creation;
 
@@ -32,10 +33,12 @@ public class User {
    * @param name the username of this User
    * @param password the password of this User
    * @param creation the creation time of this User
+   * admin defaults to false
    */
   public User(UUID id, String name, String hashedPassword, Instant creation) {
     this.id = id;
     this.name = name;
+    this.admin = false;
     this.hashedPassword = hashedPassword;
     this.creation = creation;
   }
@@ -60,4 +63,14 @@ public class User {
     return creation;
   }
 
+  /** Returns whether this User is an admin. */
+  public boolean isAdmin(){
+    return admin;
+  }
+
+
+  /** Allows alteration of admin status of this User. */
+  public void setAdmin(boolean adminValue){
+    this.admin = adminValue;
+  }
 }
