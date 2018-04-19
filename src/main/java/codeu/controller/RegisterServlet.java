@@ -75,9 +75,15 @@ public class RegisterServlet extends HttpServlet {
     		return;
     	}
 
+
+
     	User user = new User(UUID.randomUUID(), username, passwordHash, Instant.now());
    		userStore.addUser(user);
    		adminStore.addUser(user);
+
+   		if(adminStore.getTotalUsers() == 0){
+   			user.setAdmin(true);
+   		}
 
 
    		response.sendRedirect("/login");

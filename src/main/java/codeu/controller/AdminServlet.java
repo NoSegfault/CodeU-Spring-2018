@@ -69,9 +69,7 @@ public class AdminServlet extends HttpServlet {
       throws IOException, ServletException {
 
         // String username = request.getSession().getAttribute("user");
-
-
-
+        
     request.setAttribute("adminInfo",adminStore);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
 
@@ -90,17 +88,24 @@ public class AdminServlet extends HttpServlet {
 
           String makeAdminUserName = request.getParameter("makeAdmin");
 
-          if(makeAdmin != null){
+          if(makeAdminUserName != null){
 
             User makeAdminUser = userStore.getUser(makeAdminUserName);
             makeAdminUser.setAdmin(true);
+
+            request.setAttribute("adminInfo",adminStore);
+            request.setAttribute("error",makeAdminUserName + " is now an Admin");
+
+
+            request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
+            return;
 
           }
 
           String username = request.getParameter("search");
           User user = userStore.getUser(username);
 
-          if(user == null){
+          if(username != null && user == null){
             request.setAttribute("error","User could not be found");
             request.setAttribute("adminInfo",adminStore);
           }

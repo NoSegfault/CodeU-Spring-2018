@@ -22,6 +22,13 @@
 </head>
 <body>
 
+	<% if(  !(  request.getSession().getAttribute("admin")  )   )  { %>
+
+
+	<h2 style="color:red">You do not hvae access to this site</h2>
+
+	<% } else { %>
+
 	<div id="container">
 		<h1>Admin Page</h1>
 
@@ -66,14 +73,15 @@
 		<ul> 
 			<li>Name: <%= user.getName()%></li> 
 			<li>Id: <%= user.getId()%></li> 
+			<li>Admin: <%= user.isAdmin() %></li>
 			<li>Creation Date: <%= user.getCreationTime().toString()%></li> 
 			<li>Total Messages: <%= admin.getUserTotalMessages(user.getName()) %></li>
 		</ul>
 
-		<a href="#" onclick="makeAdmin('<%= user.getName()%>')">Make Admin</a>
+		<button style="display: block;" onclick="makeAdmin('<%= user.getName()%>')">Make Admin</button>
 
 
-		<div style="display: inline-block; width: 40%; float: left; border: 1px solid; padding: 10px;">
+		<div style="width: 40%; float: left; border: 1px solid; padding: 10px;">
 			<h4>Conversations</h4>
 			<ul>
 				
@@ -105,12 +113,14 @@
 			</ul>
 		</div>
 
-	<% } %>
+		<form style="display:none;" action="/admin" method="post" id="makeAdmin_form">		
+			<input type="text" name="makeAdmin" id="makeAdmin">
+			<input type="submit" name="Make Admin">
+		</form>
 
-	<form action="/admin" method="post" id="makeAdmin_form">		
-		<input type="text" name="makeAdmin" id="makeAdmin">
-		<input type="submit" name="Make Admin">
-	</form>
+	<% } } %>
+
+	
 
 
 	</div>
@@ -131,7 +141,7 @@
 		function makeAdmin(user){
 
 			document.getElementById("makeAdmin").value = user;
-
+			document.getElementById("makeAdmin_form").submit();
 		}
 
 
