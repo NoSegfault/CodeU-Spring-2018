@@ -16,7 +16,7 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ include file="/../../nav-bar.html" %>
-<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.Message" %>
 
 <!DOCTYPE html>
 <html>
@@ -57,25 +57,25 @@
       <br/>
       <a><strong>'s Sent Messages </strong></a>
       <%
-      List<Conversation> conversationss =
-        (List<Conversation>) request.getAttribute("conversations");
-      if(conversationss != null && !conversationss.isEmpty()){
+      List<Message> messages =
+        (List<Message>) request.getAttribute("messages");
+      if(messages != null && !messages.isEmpty()){
       %>
         <ul class="mdl-list">
        <%
-        for(Conversation conversation : conversationss){
+        for(Message message : messages){
        %>
-          <%if (conversation.getOwnerId() != null){ 
+          <%if (message.getAuthorId() != null){ 
           %>
-             <li><a href="/chat/<%= conversation.getTitle() %>">
-               <%= conversation.getTitle() %></a></li>
+             <li><a href="/chat/<%= message.getCreationTime() %>">
+               <%= message.getContent() %></a></li>
         <% 
          }
         %>
       <%
         }
       %>
-      	</ul>
+        </ul>
       <%
       }
       %>
