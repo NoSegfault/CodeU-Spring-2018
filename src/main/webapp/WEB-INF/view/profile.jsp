@@ -40,7 +40,8 @@
       <br/>
 
             <p><strong>Edit your profile here! (only you can see this) </strong></p>
-            <textarea rows="4" cols="100" id ="aboutMeText" name = "profileContent">
+       <form>
+           <textarea rows="4" cols="100" id ="aboutMeText" name = "profileContent">
           </textarea>
           <br/>
           <button type="submit" onclick= "newProfile()">Update</button>
