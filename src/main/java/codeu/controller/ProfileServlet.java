@@ -58,7 +58,7 @@ public class ProfileServlet extends HttpServlet {
 
         if(userProfile != null){
 
-          request.setAttribute("userOwnedProfle",false);
+          request.setAttribute("userOwnedProfile",false);
 
 
           if(request.getSession().getAttribute("user") != null){
@@ -69,7 +69,7 @@ public class ProfileServlet extends HttpServlet {
             if(userLoggedIn != null){
               if(userLoggedInName.equals(userProfileName)){
 
-                request.setAttribute("userOwnedProfle",true);
+                request.setAttribute("userOwnedProfile",true);
 
               }
             }
