@@ -48,9 +48,9 @@ public class ProfileServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-
-        String requestUrl = request.getRequestURI();
-        String userProfileName = requestUrl.substring("/profile/".length());
+        
+        String userProfileName = (String) request.getParameter("uname");
+        System.out.println("userProfileName is " + userProfileName);
 
         User userProfile = userStore.getUser(userProfileName);
         
