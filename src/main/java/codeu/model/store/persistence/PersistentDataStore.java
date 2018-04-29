@@ -155,6 +155,7 @@ public class PersistentDataStore {
     userEntity.setProperty("admin",user.isAdmin());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("profileContent",user.getProfileContent()):
     datastore.put(userEntity);
   }
 

@@ -25,6 +25,7 @@ public class User {
   private boolean admin;
   private final String hashedPassword;
   private final Instant creation;
+  private final String profileContent;
 
   /**
    * Constructs a new User.
@@ -61,6 +62,11 @@ public class User {
   /** Returns the creation time of this User. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns profile content of this User. */
+  public String getProfileContent(){
+    return profileContent;
   }
 
   /** Returns whether this User is an admin. */
