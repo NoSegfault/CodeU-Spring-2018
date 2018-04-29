@@ -135,16 +135,6 @@ public class MessageStore {
   }
 
   public int getTotal(){
-    // List<Conversation> conversations = conversationStore.getAllConversations();
-
-    // MessageStore messageStore = MessageStore.getInstance();
-
-    // int count = 0;
-    //   for(Conversation conversation : conversations){
-    //     List<Message> messagesInConversation = messageStore.getMessagesInConversation(conversation.getId());
-    //     count += messagesInConversation.size();
-    //   }
-    // return count;
     return messages.size();
   }
 

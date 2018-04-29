@@ -9,7 +9,10 @@
         <a href="/register">Register</a>
       <% } %>
       <a href="about.jsp">About</a>
-      <a href="/testdata">Load Test Data</a>
+      <% if(Boolean.TRUE.equals(request.getSession().getAttribute("admin"))){ %>
+            <a href="/testdata">Admin Page</a>
+      <% } %>
+
 
     </nav>
 </body>

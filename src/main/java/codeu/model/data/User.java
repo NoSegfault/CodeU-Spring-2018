@@ -25,7 +25,7 @@ public class User {
   private boolean admin;
   private final String hashedPassword;
   private final Instant creation;
-  private final String profileContent;
+  private String profileContent;
 
   /**
    * Constructs a new User.
@@ -79,4 +79,10 @@ public class User {
   public void setAdmin(boolean adminValue){
     this.admin = adminValue;
   }
+
+  /** Allows alteration of profile content of this User. */
+  public void setProfileContent(string content){
+  	this.profileContent = content;
+  }
+
 }

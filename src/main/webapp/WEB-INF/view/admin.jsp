@@ -11,7 +11,7 @@
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ include file="/../../nav-bar.html" %>
 
-<% AdminStore admin = (AdminStore) request.getAttribute("admin"); %>
+<% AdminStore admin = (AdminStore) request.getAttribute("adminInfo"); %>
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +22,18 @@
 </head>
 <body>
 
+
 	<div id="container">
+
+		<% if(request.getSession().getAttribute("admin") == null){ %>
+			<h2 style="color:red">You do not have access to this site </h2>
+
+     	<% } else if((boolean) request.getSession().getAttribute("admin") == false) { %>
+
+     		<h2 style="color:red">You do not have access to this site </h2>
+
+     	<% } else { %>
+
 		<h1>Admin Page</h1>
 
 		<form method="POST" action="/admin">
@@ -66,13 +77,15 @@
 		<ul> 
 			<li>Name: <%= user.getName()%></li> 
 			<li>Id: <%= user.getId()%></li> 
+			<li>Admin: <%= user.isAdmin() %></li>
 			<li>Creation Date: <%= user.getCreationTime().toString()%></li> 
 			<li>Total Messages: <%= admin.getUserTotalMessages(user.getName()) %></li>
 		</ul>
 
+		<button style="display: block;" onclick="makeAdmin('<%= user.getName()%>')">Make Admin</button>
 
 
-		<div style="display: inline-block; width: 40%; float: left; border: 1px solid; padding: 10px;">
+		<div style="width: 40%; float: left; border: 1px solid; padding: 10px;">
 			<h4>Conversations</h4>
 			<ul>
 				
@@ -104,7 +117,14 @@
 			</ul>
 		</div>
 
+		<form style="display:none;" action="/admin" method="post" id="makeAdmin_form">		
+			<input type="text" name="makeAdmin" id="makeAdmin">
+			<input type="submit" name="Make Admin">
+		</form>
+
 	<% } %>
+	<% } %>
+	
 
 
 	</div>
@@ -119,6 +139,13 @@
 			document.getElementsByClassName("dropdown_box")[i].classList.toggle("expanded_box");
 
 
+		}
+
+
+		function makeAdmin(user){
+
+			document.getElementById("makeAdmin").value = user;
+			document.getElementById("makeAdmin_form").submit();
 		}
 
 
