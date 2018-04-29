@@ -81,7 +81,7 @@ public class User {
   }
 
   /** Allows alteration of profile content of this User. */
-  public void setProfileContent(string content){
+  public void setProfileContent(String content){
   	this.profileContent = content;
   }
 
