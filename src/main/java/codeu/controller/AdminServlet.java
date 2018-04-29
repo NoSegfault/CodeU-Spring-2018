@@ -92,9 +92,12 @@ public class AdminServlet extends HttpServlet {
 
             User makeAdminUser = userStore.getUser(makeAdminUserName);
             makeAdminUser.setAdmin(true);
+            userStore.updateUser(makeAdminUser);
+
 
             request.setAttribute("adminInfo",adminStore);
             request.setAttribute("error",makeAdminUserName + " is now an Admin");
+            //request.setAttribute("error",userStore.updateUser(makeAdminUser));
 
 
             request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);

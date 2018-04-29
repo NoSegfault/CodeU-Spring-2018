@@ -84,6 +84,7 @@ public class RegisterServlet extends HttpServlet {
 
    		if(adminStore.getTotalUsers() == 1){
    			user.setAdmin(true);
+   			userStore.updateUser(user);
    		}
 
 

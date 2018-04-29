@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,7 @@ public class PersistentDataStore {
         String password = (String) entity.getProperty("password");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         User user = new User(uuid, userName, password, creationTime);
+        user.setAdmin(admin);
         users.add(user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -147,15 +149,39 @@ public class PersistentDataStore {
     return messages;
   }
 
+
+  public void updateUser(User user){
+
+    try {
+      Key userKey = KeyFactory.createKey("chat-users",user.getId().toString());
+      Entity userEntity = datastore.get(userKey);
+
+      userEntity.setProperty("uuid", user.getId().toString());
+      userEntity.setProperty("username", user.getName());
+      userEntity.setProperty("admin",user.isAdmin());
+      userEntity.setProperty("password", user.getPassword());
+      userEntity.setProperty("creation_time", user.getCreationTime().toString());
+      userEntity.setProperty("profileContent",user.getProfileContent());
+      datastore.put(userEntity);
+
+    } catch (Exception e) {
+      // In a production environment, errors should be very rare. Errors which may
+      // occur include network errors, Datastore service errors, authorization errors,
+      // database entity definition mismatches, or service mismatches.
+    }
+
+    return;
+  }
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
-    Entity userEntity = new Entity("chat-users");
+    Entity userEntity = new Entity("chat-users",user.getId().toString());
     userEntity.setProperty("uuid", user.getId().toString());
     userEntity.setProperty("username", user.getName());
     userEntity.setProperty("admin",user.isAdmin());
     userEntity.setProperty("password", user.getPassword());
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
-    userEntity.setProperty("profileContent",user.getProfileContent()):
+    userEntity.setProperty("profileContent",user.getProfileContent());
     datastore.put(userEntity);
   }
 

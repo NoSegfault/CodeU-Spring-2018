@@ -108,6 +108,10 @@ public class UserStore {
     return null;
   }
 
+  public void updateUser(User user){
+    persistentStorageAgent.updateUser(user);
+  }
+
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
     users.add(user);

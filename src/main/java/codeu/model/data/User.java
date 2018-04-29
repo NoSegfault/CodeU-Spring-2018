@@ -25,7 +25,7 @@ public class User {
   private boolean admin;
   private final String hashedPassword;
   private final Instant creation;
-  private final String profileContent;
+  private String profileContent;
 
   /**
    * Constructs a new User.
@@ -42,6 +42,7 @@ public class User {
     this.admin = false;
     this.hashedPassword = hashedPassword;
     this.creation = creation;
+    this.profileContent = "";
   }
 
   /** Returns the ID of this User. */
