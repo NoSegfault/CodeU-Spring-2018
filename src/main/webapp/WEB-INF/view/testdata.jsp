@@ -31,6 +31,19 @@
       <button type="submit" value="confirm" name="confirm">Confirm</button>
       <button type="submit" value="cancel" name="cancel">Do Nothing</button>
     </form>
+    <br>
+    <p> This will upload Conversation Data to allow an admin user to import conversations into the application for testing purposes.</p>
+    <form action="/testdata" method="POST">
+      <input type="file">
+      <button type="submit" value="upload_conversation" name="upload_conversation">Upload Conversation file</button>
+    </form>
+    <br>
+    <p> This will upload User Data to allow an admin user to import users into the application for testing purposes.</p>
+    <form action="/testdata" method="POST">
+      <input type="file">
+      <button type="submit" value="upload_user" name="upload_user">Upload User file</button>
+    </form>
+
   </div>
 </body>
 </html>

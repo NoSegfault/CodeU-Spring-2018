@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /** Servlet class responsible for loading test data. */
 public class TestDataServlet extends HttpServlet {
 
@@ -93,6 +94,17 @@ public class TestDataServlet extends HttpServlet {
       messageStore.loadTestData();
     }
 
+    String uploadConversationButton = request.getParameter("upload_conversation");
+    if (uploadConversationButton != null) {
+      System.out.println("need to process the uploaded conversation file");
+    }
+
+    String uploadUserButton = request.getParameter("upload_user");
+    if (uploadUserButton != null) {
+      System.out.println("need to process the uploaded user file");
+    }
+
     response.sendRedirect("/");
+    
   }
 }
