@@ -25,6 +25,7 @@ public class User {
   private boolean admin;
   private final String hashedPassword;
   private final Instant creation;
+  private String profileContent;
 
   /**
    * Constructs a new User.
@@ -63,6 +64,11 @@ public class User {
     return creation;
   }
 
+  /** Returns profile content of this User. */
+  public String getProfileContent(){
+    return profileContent;
+  }
+
   /** Returns whether this User is an admin. */
   public boolean isAdmin(){
     return admin;
@@ -73,4 +79,10 @@ public class User {
   public void setAdmin(boolean adminValue){
     this.admin = adminValue;
   }
+
+  /** Allows alteration of profile content of this User. */
+  public void setProfileContent(String content){
+  	this.profileContent = content;
+  }
+
 }
