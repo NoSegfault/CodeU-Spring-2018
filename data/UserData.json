@@ -1,0 +1,15 @@
+{ 	"users" : [
+		{
+			"Userid" : "1",
+			"username": "dranderson",
+				"Creation" : "01-01-2018:18:30:57",
+				"Admin" : "true"
+		},
+		{
+			"Userid" : "1",
+			"username": "dranderson",
+				"Creation" : "01-01-2018:18:30:57",
+				"Admin" : "true"
+		}
+ 	]
+}

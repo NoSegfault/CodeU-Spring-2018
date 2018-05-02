@@ -1,0 +1,37 @@
+{ 	"conversations" : [
+		{
+			"Conversationid" : "1",
+			"Messages": [
+				{
+					"Authorid" : "1",
+					"Content" : "Message Text 1",
+					"Creation" : "01-01-2018:18:30:57"
+				},
+				{
+					"Authorid" : "2",
+					"Content" : "Message Text 2",
+					"Creation" : "01-01-2018:18:31:00"
+				}
+
+			]
+		},
+		{
+			"Conversationid" : "2",
+			"Messages": [
+				{
+					"Authorid" : "2",
+					"Content" : "Message Text 3",
+					"Creation" : "01-01-2018:18:30:57"
+				},
+				{
+					"Authorid" : "3",
+					"Content" : "Message Text 4",
+					"Creation" : "01-01-2018:18:31:00"
+				}
+
+			]
+
+		}
+
+ 	]
+}
