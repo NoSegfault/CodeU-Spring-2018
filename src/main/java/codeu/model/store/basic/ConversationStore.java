@@ -59,11 +59,18 @@ public class ConversationStore {
   /** The in-memory list of Conversations. */
   private List<Conversation> conversations;
 
+  /** The in-memory list of private Conversations. */
+  private List<Conversation> privateConversations;
+
+
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private ConversationStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
     conversations = new ArrayList<>();
+    privateConversations = new ArrayList<>();
   }
+
+
 
   /**
    * Load a set of randomly-generated Conversation objects.
@@ -88,6 +95,10 @@ public class ConversationStore {
   }
 
 
+  /** Access the current set of private conversations known to the application. */
+  public List<Conversation> getAllPrivateConversations() {
+    return privateConversations;
+  }
 
 
 
@@ -97,6 +108,14 @@ public class ConversationStore {
     persistentStorageAgent.writeThrough(conversation);
   }
 
+
+  /** Add a new conversation to the current set of conversations known to the application. */
+  public void addPrivateConversation(Conversation privateConversation) {
+    privateConversations.add(privateConversation);
+    persistentStorageAgent.writeThrough(privateConversation);
+  }
+
+
   /** Check whether a Conversation title is already known to the application. */
   public boolean isTitleTaken(String title) {
     // This approach will be pretty slow if we have many Conversations.
@@ -105,8 +124,14 @@ public class ConversationStore {
         return true;
       }
     }
+    for (Conversation privateConversation : privateConversations) {
+      if (privateConversation.getTitle().equals(title)) {
+        return true;
+      }
+    }
     return false;
   }
+
 
   /** Find and return the Conversation with the given title. */
   public Conversation getConversationWithTitle(String title) {
@@ -115,14 +140,25 @@ public class ConversationStore {
         return conversation;
       }
     }
+    for (Conversation privateConversation : privateConversations) {
+      if (privateConversation.getTitle().equals(title)) {
+        return privateConversation;
+      }
+    }
     return null;
   }
+
 
   /** Find and return the Conversation with the given Id. */
   public Conversation getConversationWithId(UUID conversationId) {
     for (Conversation conversation : conversations) {
       if (conversation.getId().equals(conversationId)) {
         return conversation;
+      }
+    }
+    for (Conversation privateConversation : privateConversations) {
+      if (privateConversation.getId().equals(conversationId)) {
+        return privateConversation;
       }
     }
     return null;
@@ -144,6 +180,11 @@ public class ConversationStore {
   /** Sets the List of Conversations stored by this ConversationStore. */
   public void setConversations(List<Conversation> conversations) {
     this.conversations = conversations;
+  }
+
+  /** Sets the List of private Conversations stored by this ConversationStore. */
+  public void setPrivateConversations(List<Conversation> privateConversations) {
+    this.privateConversations = privateConversations;
   }
 
   public int getTotal(){

@@ -14,27 +14,20 @@
 
 package codeu.model.data;
 
-import java.time.Instant;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class ConversationTest {
+public class UserConversationMapTest {
 
   @Test
   public void testCreate() {
-    UUID id = UUID.randomUUID();
-    UUID owner = UUID.randomUUID();
-    String title = "Test_Title";
-    Instant creation = Instant.now();
-    boolean isPrivate = true;
-
-    Conversation conversation = new Conversation(id, owner, title, creation, isPrivate);
-
-    Assert.assertEquals(id, conversation.getId());
-    Assert.assertEquals(owner, conversation.getOwnerId());
-    Assert.assertEquals(title, conversation.getTitle());
-    Assert.assertEquals(creation, conversation.getCreationTime());
-    Assert.assertEquals(isPrivate, conversation.isPrivate());
+    UUID userID = UUID.randomUUID();
+    UUID conversationID = UUID.randomUUID();
+    
+    UserConversationMap mapping = new UserConversationMap(userID, conversationID);
+    
+    Assert.assertEquals(userID, mapping.getUserID());
+    Assert.assertEquals(conversationID, mapping.getConversationID());
   }
 }
