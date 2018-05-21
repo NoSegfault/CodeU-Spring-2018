@@ -3,6 +3,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.UserConversationMap;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
@@ -77,13 +78,15 @@ public class PersistentDataStoreTest {
     UUID ownerOne = UUID.randomUUID();
     String titleOne = "Test_Title";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne);
+    boolean isPrivateOne = false;
+    Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne, isPrivateOne);
 
     UUID idTwo = UUID.randomUUID();
     UUID ownerTwo = UUID.randomUUID();
     String titleTwo = "Test_Title_Two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo);
+    boolean isPrivateTwo = false;
+    Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo, isPrivateTwo);
 
     // save
     persistentDataStore.writeThrough(inputConversationOne);
@@ -98,12 +101,57 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(ownerOne, resultConversationOne.getOwnerId());
     Assert.assertEquals(titleOne, resultConversationOne.getTitle());
     Assert.assertEquals(creationOne, resultConversationOne.getCreationTime());
+    Assert.assertEquals(isPrivateOne, resultConversationOne.isPrivate());
 
     Conversation resultConversationTwo = resultConversations.get(1);
     Assert.assertEquals(idTwo, resultConversationTwo.getId());
     Assert.assertEquals(ownerTwo, resultConversationTwo.getOwnerId());
     Assert.assertEquals(titleTwo, resultConversationTwo.getTitle());
     Assert.assertEquals(creationTwo, resultConversationTwo.getCreationTime());
+    Assert.assertEquals(isPrivateTwo, resultConversationTwo.isPrivate());
+  }
+
+  @Test
+  public void testSaveAndLoadPrivateConversations() throws PersistentDataStoreException {
+    UUID idOne = UUID.randomUUID();
+    UUID ownerOne = UUID.randomUUID();
+    String titleOne = "Test_Title";
+    Instant creationOne = Instant.ofEpochMilli(1000);
+    boolean isPrivateOne = true;
+    Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne, isPrivateOne);
+    UserConversationMap mappingOne = new UserConversationMap(ownerOne, idOne);
+
+    UUID idTwo = UUID.randomUUID();
+    UUID ownerTwo = UUID.randomUUID();
+    String titleTwo = "Test_Title_Two";
+    Instant creationTwo = Instant.ofEpochMilli(2000);
+    boolean isPrivateTwo = true;
+    Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo, isPrivateTwo);
+    UserConversationMap mappingTwo = new UserConversationMap(ownerTwo, idTwo);
+
+    // save
+    persistentDataStore.writeThrough(inputConversationOne);
+    persistentDataStore.writeThrough(inputConversationTwo);
+    persistentDataStore.writeThrough(mappingOne);
+    persistentDataStore.writeThrough(mappingTwo);
+
+    // load
+    Conversation resultConversationOne = persistentDataStore.loadPrivateConversations(ownerOne).get(0);
+    Conversation resultConversationTwo = persistentDataStore.loadPrivateConversations(ownerTwo).get(0);
+
+
+    // confirm that what we saved matches what we loaded
+    Assert.assertEquals(idOne, resultConversationOne.getId());
+    Assert.assertEquals(ownerOne, resultConversationOne.getOwnerId());
+    Assert.assertEquals(titleOne, resultConversationOne.getTitle());
+    Assert.assertEquals(creationOne, resultConversationOne.getCreationTime());
+    Assert.assertEquals(isPrivateOne, resultConversationOne.isPrivate());
+
+    Assert.assertEquals(idTwo, resultConversationTwo.getId());
+    Assert.assertEquals(ownerTwo, resultConversationTwo.getOwnerId());
+    Assert.assertEquals(titleTwo, resultConversationTwo.getTitle());
+    Assert.assertEquals(creationTwo, resultConversationTwo.getCreationTime());
+    Assert.assertEquals(isPrivateTwo, resultConversationTwo.isPrivate());
   }
 
   @Test

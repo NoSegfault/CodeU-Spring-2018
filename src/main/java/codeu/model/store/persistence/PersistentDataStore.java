@@ -17,6 +17,7 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.UserConversationMap;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
@@ -102,7 +103,12 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
+        boolean isPrivate = (boolean) entity.getProperty("is_private");
+        if (isPrivate) {
+          // only load non-private conversations
+          continue;
+        }
+        Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, isPrivate);
         conversations.add(conversation);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
@@ -114,6 +120,124 @@ public class PersistentDataStore {
 
     return conversations;
   }
+
+
+  public List<Conversation> loadPrivateConversations(String username) throws PersistentDataStoreException {
+    
+    List<UUID> privateConversationsID = new ArrayList<>();
+
+    // Get all conversation ids for username from the UserConversations table
+    UUID userID = UUID.randomUUID();
+    Query query = new Query("chat-users");
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      try {
+        String userName = (String) entity.getProperty("username");
+        if (userName.equals(username)) {
+          userID = UUID.fromString((String) entity.getProperty("uuid"));
+          break;
+        }
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    // Retrieve all private conversations from the datastore.
+    query = new Query("chat-conversationmappings");
+    results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID uuid = UUID.fromString((String) entity.getProperty("user_id"));
+        UUID conversationID = UUID.fromString((String) entity.getProperty("conversation_id"));
+        if (uuid.equals(userID)) {
+          privateConversationsID.add(conversationID);
+        }
+      } catch (Exception e) {
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    // Iterate through the returned Ids and get the conversations from the chat-conversations table
+    List<Conversation> privateConversations = new ArrayList<>();
+
+    for (UUID privateConversationID : privateConversationsID) {
+      query = new Query("chat-conversations");
+      results = datastore.prepare(query);
+
+      for (Entity entity : results.asIterable()) {
+        try {
+          UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+          if (uuid.equals(privateConversationID)) {
+            UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
+            String title = (String) entity.getProperty("title");
+            Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+            boolean isPrivate = true;
+            Conversation privateConversation = new Conversation(uuid, ownerUuid, title, creationTime, isPrivate);
+            privateConversations.add(privateConversation);
+          }
+        } catch (Exception e) {
+          throw new PersistentDataStoreException(e);
+        }
+      }
+    }
+
+    return privateConversations;
+  }
+
+
+  public List<Conversation> loadPrivateConversations(UUID userID) throws PersistentDataStoreException {
+    
+    List<UUID> privateConversationsID = new ArrayList<>();
+
+    // Get all conversation ids for username from the UserConversations table
+
+    // Retrieve all private conversations from the datastore.
+    Query query = new Query("chat-conversationmappings");
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID uuid = UUID.fromString((String) entity.getProperty("user_id"));
+        UUID conversationID = UUID.fromString((String) entity.getProperty("conversation_id"));
+        if (uuid.equals(userID)) {
+          privateConversationsID.add(conversationID);
+        }
+      } catch (Exception e) {
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    // Iterate through the returned Ids and get the conversations from the chat-conversations table
+    List<Conversation> privateConversations = new ArrayList<>();
+
+    for (UUID privateConversationID : privateConversationsID) {
+      query = new Query("chat-conversations");
+      results = datastore.prepare(query);
+
+      for (Entity entity : results.asIterable()) {
+        try {
+          UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+          if (uuid.equals(privateConversationID)) {
+            UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
+            String title = (String) entity.getProperty("title");
+            Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+            boolean isPrivate = true;
+            Conversation privateConversation = new Conversation(uuid, ownerUuid, title, creationTime, isPrivate);
+            privateConversations.add(privateConversation);
+          }
+        } catch (Exception e) {
+          throw new PersistentDataStoreException(e);
+        }
+      }
+    }
+
+    return privateConversations;
+  }
+
 
   /**
    * Loads all Message objects from the Datastore service and returns them in a List.
@@ -203,6 +327,15 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("is_private", conversation.isPrivate());
     datastore.put(conversationEntity);
+  }
+
+  /** Write a UserConversationMap object to the Datastore service. */
+  public void writeThrough(UserConversationMap mapping) {
+    Entity userConversationEntity = new Entity("chat-conversationmappings");
+    userConversationEntity.setProperty("user_id", mapping.getUserID().toString());
+    userConversationEntity.setProperty("conversation_id", mapping.getConversationID().toString());
+    datastore.put(userConversationEntity);
   }
 }

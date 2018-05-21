@@ -17,8 +17,10 @@ package codeu.model.store.persistence;
 import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
+import codeu.model.data.UserConversationMap;
 import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This class is the interface between the application and PersistentDataStore, which handles
@@ -79,6 +81,14 @@ public class PersistentStorageAgent {
     return persistentDataStore.loadConversations();
   }
 
+  public List<Conversation> loadPrivateConversations(String username) throws PersistentDataStoreException {
+    return persistentDataStore.loadPrivateConversations(username);
+  }
+
+  public List<Conversation> loadPrivateConversations(UUID userID) throws PersistentDataStoreException {
+    return persistentDataStore.loadPrivateConversations(userID);
+  }
+
   /**
    * Retrieve all Message objects from the Datastore service. The returned list may be empty.
    *
@@ -99,13 +109,18 @@ public class PersistentStorageAgent {
     persistentDataStore.writeThrough(user);
   }
 
-  /** Write a Message object to the Datastore service. */
+  /** Write a Conversation object to the Datastore service. */
   public void writeThrough(Conversation conversation) {
     persistentDataStore.writeThrough(conversation);
   }
 
-  /** Write a Conversation object to the Datastore service. */
+  /** Write a Message object to the Datastore service. */
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
+  }
+
+  /** Write a UserConversationMap object to the Datastore service. */
+  public void writeThrough(UserConversationMap userConversation) {
+    persistentDataStore.writeThrough(userConversation);
   }
 }
