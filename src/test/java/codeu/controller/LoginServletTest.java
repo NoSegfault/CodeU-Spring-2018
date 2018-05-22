@@ -47,12 +47,12 @@ public class LoginServletTest {
         .thenReturn(mockRequestDispatcher);
   }
 
-  @Test
-  public void testDoGet() throws IOException, ServletException {
-    loginServlet.doGet(mockRequest, mockResponse);
+  // @Test
+  // public void testDoGet() throws IOException, ServletException {
+  //   loginServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
-  }
+  //   Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  // }
 
 //  @Test
 //  public void testDoPost_BadUsername() throws IOException, ServletException {
