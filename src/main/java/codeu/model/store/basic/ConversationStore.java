@@ -94,6 +94,18 @@ public class ConversationStore {
     return conversations;
   }
 
+  public List<Conversation> getPublicConversations(){
+    List<Conversation> publicConversations = new ArrayList<>();
+
+    for(Conversation conversation : conversations){
+      if(!conversation.isPrivate()){
+        publicConversations.add(conversation);
+      }
+    }
+
+    return publicConversations;
+  }
+
 
   /** Access the current set of private conversations known to the application. */
   public List<Conversation> getAllPrivateConversations() {

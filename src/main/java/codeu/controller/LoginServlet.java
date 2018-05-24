@@ -57,6 +57,10 @@ public class LoginServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
+
+    request.getSession().setAttribute("user", null);
+    request.getSession().setAttribute("admin", false);
+
     request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
   }
 

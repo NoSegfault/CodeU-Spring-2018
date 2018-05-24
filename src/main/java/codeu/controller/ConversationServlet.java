@@ -16,17 +16,23 @@ package codeu.controller;
 
 import codeu.model.data.Conversation;
 import codeu.model.data.User;
+import codeu.model.data.UserConversationMap;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
 import codeu.model.store.basic.AdminStore;
+import codeu.model.store.basic.ConversationMappingStore;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.Arrays;
 import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import com.google.gson.Gson;
 
 /** Servlet class responsible for the conversations page. */
 public class ConversationServlet extends HttpServlet {
@@ -39,6 +45,8 @@ public class ConversationServlet extends HttpServlet {
 
   private AdminStore adminStore;
 
+  private ConversationMappingStore conversationMappingStore;
+
   /**
    * Set up state for handling conversation-related requests. This method is only called when
    * running in a server, not when running in a test.
@@ -49,6 +57,7 @@ public class ConversationServlet extends HttpServlet {
     setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
     setAdminStore(AdminStore.getInstance());
+    setConversationMappingStore(ConversationMappingStore.getInstance());
   }
 
   /**
@@ -71,6 +80,10 @@ public class ConversationServlet extends HttpServlet {
     this.adminStore = adminStore;
   }
 
+  void setConversationMappingStore(ConversationMappingStore conversationMappingStore){
+    this.conversationMappingStore = conversationMappingStore;
+  }
+
   /**
    * This function fires when a user navigates to the conversations page. It gets all of the
    * conversations from the model and forwards to conversations.jsp for rendering the list.
@@ -78,8 +91,41 @@ public class ConversationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    request.setAttribute("conversations", conversations);
+
+    List<Conversation> publicConversations = conversationStore.getPublicConversations();
+    List<Conversation> privateConversations = new ArrayList<>();
+
+
+    
+    String username = (String) request.getSession().getAttribute("user");
+    if(username != null){
+      User user = userStore.getUser(username);
+      List<UUID> conversationIds = conversationMappingStore.getConversationsWithUserID(user.getId());
+
+      for(UUID conversationId : conversationIds){
+        privateConversations.add(conversationStore.getConversationWithId(conversationId));
+      }
+
+    }
+
+    
+
+    request.setAttribute("publicConversations", publicConversations);
+    request.setAttribute("privateConversations", privateConversations);
+
+
+    Gson gson = new Gson();
+    List<User> users = userStore.getAllUsers();
+    List<String> usernames = new ArrayList<>();
+
+    for(User user : users){
+      usernames.add(user.getName());
+    }
+
+    String jsonUsernames = gson.toJson(usernames);
+
+    request.setAttribute("usernames", jsonUsernames);
+
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
   }
 
@@ -121,11 +167,39 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
-    Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), false);
 
+
+
+    boolean isPrivate = false;
+
+    List<String> usernames = new ArrayList<>();
+
+    // get the string of users and parse it into an array called usernames
+    String names = request.getParameter("usernames");
+    usernames = Arrays.asList(names.split(","));
+
+    if(!names.equals("")){
+      isPrivate = true;
+    }
+    
+    //creates the new conversation
+    Conversation conversation = new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), isPrivate);
     conversationStore.addConversation(conversation);
     adminStore.addConversation(conversation);
+
+    //creates mapping for any users in usernames array
+    for(String mapUsername : usernames){
+      User mapUser = userStore.getUser(mapUsername);
+      if(mapUser != null){
+        UserConversationMap mapping = new UserConversationMap(mapUser.getId(), conversation.getId());
+        conversationMappingStore.addMapping(mapping);
+      }
+    }
+    //adds the owner to the mapping
+    if(isPrivate){
+      UserConversationMap mapping = new UserConversationMap(user.getId(),conversation.getId());
+      conversationMappingStore.addMapping(mapping);
+    }
 
     response.sendRedirect("/chat/" + conversationTitle);
   }

@@ -156,6 +156,10 @@ public class UserStore {
     return users.size();
   }
 
+  public List<User> getAllUsers() {
+    return users;
+  }
+
   public User getMostActiveUser(){
 
 
