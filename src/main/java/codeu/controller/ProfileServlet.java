@@ -50,7 +50,7 @@ public class ProfileServlet extends HttpServlet {
       throws IOException, ServletException {
         
         String userProfileName = (String) request.getParameter("uname");
-        System.out.println("userProfileName is " + userProfileName);
+        //System.out.println("userProfileName is " + userProfileName);
 
         User userProfile = userStore.getUser(userProfileName);
         
@@ -61,6 +61,7 @@ public class ProfileServlet extends HttpServlet {
           request.setAttribute("userOwnedProfile",false);
 
 
+          //checks if a user is logged in
           if(request.getSession().getAttribute("user") != null){
               
             String userLoggedInName = (String) request.getSession().getAttribute("user");
@@ -75,10 +76,13 @@ public class ProfileServlet extends HttpServlet {
             }
           }
 
+
           List<Message> userMessages = messageStore.getUserMessages(userProfile.getId());
           request.setAttribute("messages",userMessages);
 
           request.setAttribute("userProfileName",userProfileName);
+
+          request.setAttribute("profileContent",userProfile.getProfileContent());
 
           request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request,response);
           return;
@@ -101,7 +105,16 @@ public class ProfileServlet extends HttpServlet {
 
       String profileContent = request.getParameter("profileContent");  
 
-      request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request,response);
+      String userName = (String) request.getParameter("userProfile");
+      User user = userStore.getUser(userName);
+
+      if(user != null){
+        user.setProfileContent(profileContent);
+        userStore.updateUser(user);
+      }
+
+      response.sendRedirect("/profile?uname="+userName);
+      //request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request,response);
 
 
   }
