@@ -115,14 +115,8 @@
     }
     if (!pubConversations.isEmpty()){ %>
       <h2>Public Conversations</h2>
-	<%}
-	if (!privConversations.isEmpty()){ %>
-      <h2>Private Conversations</h2>
-	<%}
-    else{
-    %>
       <ul class="mdl-list">
-    <%
+      <%
       for(Conversation conversation : pubConversations){
     %>
       <li><a href="/chat/<%= conversation.getTitle() %>">
@@ -130,6 +124,11 @@
     <%
       }
     %>
+     </ul>
+	<%}
+	if (!privConversations.isEmpty()){ %>
+      <h2>Private Conversations</h2>
+      <ul class="mdl-list">
      <%
       for(Conversation conversation : privConversations){
     %>
