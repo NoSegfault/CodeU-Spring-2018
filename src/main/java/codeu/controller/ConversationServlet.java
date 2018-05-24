@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.Gson;
+import com.google.gson.*;
 
 /** Servlet class responsible for the conversations page. */
 public class ConversationServlet extends HttpServlet {
@@ -175,8 +175,8 @@ public class ConversationServlet extends HttpServlet {
     List<String> usernames = new ArrayList<>();
 
     // get the string of users and parse it into an array called usernames
-    String names = request.getParameter("usernames");
-    usernames = Arrays.asList(names.split(","));
+    String names = request.getParameter("invitedUsers");
+    usernames = Arrays.asList(names.split(", "));
 
     if(!names.equals("")){
       isPrivate = true;
@@ -195,6 +195,7 @@ public class ConversationServlet extends HttpServlet {
         conversationMappingStore.addMapping(mapping);
       }
     }
+
     //adds the owner to the mapping
     if(isPrivate){
       UserConversationMap mapping = new UserConversationMap(user.getId(),conversation.getId());

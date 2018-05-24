@@ -21,7 +21,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= request.getSession().getAttribute("user") %>'s Profile Page</title>
+  <title><%= request.getAttribute("userProfileName") %>'s Profile Page</title>
   <link rel="stylesheet" href="/css/main.css">
       <style>
       label {
@@ -32,20 +32,25 @@
 </head>
 <body>
     <div id="container">
-      <h1>'s Profile Page</h1>
+      <h1><%= request.getAttribute("userProfileName") %>'s Profile Page</h1>
+
+
       <a><strong> About </strong></a>
-      <p><span id='profileInfo'></span></p>
+      <p><%= request.getAttribute("profileContent") %></p>
 
       <br/>
       <br/>
+
+      <% if(Boolean.TRUE.equals(request.getAttribute("userOwnedProfile"))) { %>
 
             <p><strong>Edit your profile here! (only you can see this) </strong></p>
-       <form>
-           <textarea rows="4" cols="100" id ="aboutMeText" name = "profileContent">
+       <form action="/profile" method="POST">
+           <textarea rows="4" cols="100" id ="aboutMeText" name="profileContent">
           </textarea>
           <br/>
+          <input style="display:none;" type="text" name="userProfile" value='<%= (String) request.getAttribute("userProfileName") %>'>
           <button type="submit" onclick= "newProfile()">Update</button>
-          <p id = "test"> </p>
+          
        </form>
 
        <script>
@@ -54,9 +59,12 @@
        }
        </script>
 
+
+      <% } %>
+
       <br/>
       <br/>
-      <a><strong>'s Sent Messages </strong></a>
+      <a><strong><%= request.getAttribute("userProfileName") %>'s Sent Messages </strong></a>
       <%
       List<Message> messages =
         (List<Message>) request.getAttribute("messages");
