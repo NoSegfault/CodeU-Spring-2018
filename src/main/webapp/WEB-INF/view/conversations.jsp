@@ -24,20 +24,17 @@
   <title>Conversations</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
-
+<!-- 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>jQuery UI Autocomplete - Multiple values</title>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
+ 
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-	String allUsers = (String) request.getAttribute("usernames");
-	
+       
   $( function() {
-
-    var availableTags = [ allUsers ];
+    var availableTags = [(List<String>) request.getAttribute("usernames")];
     function split( val ) {
       return val.split( /,\s*/ );
     }
@@ -77,7 +74,8 @@
         }
       });
   } );
-  </script>
+  </script> -->
+
 
 <body>
   <div id="container">
@@ -86,27 +84,25 @@
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
-    <% if(request.getSession().getAttribute("user") != null){ %>
+
       <h1>New Conversation</h1>
       <form action="/conversations" method="POST">
           <div class="form-group">
             <label class="form-control-label">Title:</label>
             <input type="text" name="conversationTitle" size="50">
 
-        </div>
-		<div class="ui-widget">
-		  <label for="tags">Invite: </label>
-		  <input type="text" name="invitedUsers" id="tags" size="50">
+      		<br>
+      		<label for="tags">Invite: </label>
+		    <input type="text" name="invitedUsers" id="tags" size="50">
 		</div>
         <button type="submit">Create</button>
 
       </form>
 
       <hr/>
-    <% } %>
+
 
     <h1>Conversations</h1>
-
     <%
     List<Conversation> pubConversations =
       (List<Conversation>) request.getAttribute("publicConversations");
@@ -117,6 +113,12 @@
       <p>Create a conversation to get started.</p>
     <%
     }
+    if (!pubConversations.isEmpty()){ %>
+      <h2>Public Conversations</h2>
+	<%}
+	if (!privConversations.isEmpty()){ %>
+      <h2>Private Conversations</h2>
+	<%}
     else{
     %>
       <ul class="mdl-list">
