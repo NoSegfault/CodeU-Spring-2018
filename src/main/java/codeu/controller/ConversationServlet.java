@@ -122,7 +122,15 @@ public class ConversationServlet extends HttpServlet {
       usernames.add(user.getName());
     }
 
+
+    // String jsonStringUsernames = gson.toJson(usernames);
+    // JsonParser parser = new JsonParser();
+    // JsonElement temp = parser.parse(jsonStringUsernames);
+    // JsonArray jsonUsernames = temp.getAsJsonArray();
+
+    //JsonArray jsonUsernames = gson.toJson();
     String jsonUsernames = gson.toJson(usernames);
+    
 
     request.setAttribute("usernames", jsonUsernames);
 

@@ -23,6 +23,54 @@
 <head>
   <title>Conversations</title>
   <link rel="stylesheet" href="/css/main.css">
+  <script type="text/javascript" language="javascript" src="jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $( function() {
+    var availableTags = $.parseJSON('<%= request.getAttribute("usernames") %>');
+    function split( val ) {
+      return val.split( /,\s*/ );
+    }
+    function extractLast( term ) {
+      return split( term ).pop();
+    }
+ 
+    $( "#tags" )
+      // don't navigate away from the field on tab when selecting an item
+      .on( "keydown", function( event ) {
+        if ( event.keyCode === $.ui.keyCode.TAB &&
+            $( this ).autocomplete( "instance" ).menu.active ) {
+          event.preventDefault();
+        }
+      })
+      .autocomplete({
+        minLength: 0,
+        source: function( request, response ) {
+          // delegate back to autocomplete, but extract the last term
+          response( $.ui.autocomplete.filter(
+            availableTags, extractLast( request.term ) ) );
+        },
+        focus: function() {
+          // prevent value inserted on focus
+          return false;
+        },
+        select: function( event, ui ) {
+          var terms = split( this.value );
+          // remove the current input
+          terms.pop();
+          // add the selected item
+          terms.push( ui.item.value );
+          // add placeholder to get the comma-and-space at the end
+          terms.push( "" );
+          this.value = terms.join( ", " );
+          return false;
+        }
+      });
+  } );
+  </script>
 </head>
 <!-- 
   <meta charset="utf-8">
@@ -80,27 +128,31 @@
 <body>
   <div id="container">
 
+
     <% if(request.getAttribute("error") != null){ %>
         <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
 
+    
+    <% if(request.getSession().getAttribute("user") != null){ %>
       <h1>New Conversation</h1>
       <form action="/conversations" method="POST">
-          <div class="form-group">
+        <div class="form-group">
             <label class="form-control-label">Title:</label>
             <input type="text" name="conversationTitle" size="50">
-
-      		<br>
-      		<label for="tags">Invite: </label>
-		    <input type="text" name="invitedUsers" id="tags" size="50">
-		</div>
+          <div class="ui-widget">
+            <label for="tags">Invite: </label>
+            <input type="text" name="invitedUsers" id="tags" size="50">
+          </div>
+        </div>
+		  
         <button type="submit">Create</button>
 
       </form>
 
       <hr/>
-
+    <% } %>
 
     <h1>Conversations</h1>
     <%
